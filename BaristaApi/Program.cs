@@ -13,6 +13,10 @@ namespace BaristaApi
             Console.WriteLine(cappuccino.GetType());
             IBeverage americano = new Espresso().AddWater().ToBeverage();
             Console.WriteLine(americano.GetType());
+            IBeverage macchiato = new Espresso().AddMilkFoam().ToBeverage();
+            Console.WriteLine(macchiato.GetType());
+            IBeverage custom = new Espresso().AddMilkFoam().AddChocolateSyrup().ToBeverage();
+            Console.WriteLine(custom.GetType());
             //IBeverage espresso = new Espresso().AddWater(20).AddBeans(b => b.AmountInG = 5 && b.Sort = CoffeSorts.Robusta).ToBravage();
             //espresso is type of Espresso
 

@@ -149,7 +149,14 @@ class Espresso : IBeverage
         {
             return new Americano();
         }
-            return this;
+        // Macchiato
+        if (Ingredients.Count == 1 && Ingredients.Contains(Ingredient.MilkFoam))
+        {
+            return new Macchiato(); 
+        }
+        //Mocha 
+        //...
+        return new CustomBeverage();
     }
 
     public IBeverage Validate()
@@ -177,6 +184,21 @@ class Cappuccino : Espresso
 class Americano : Espresso
 {
     public Americano() : base(new List<Ingredient>() { Ingredient.Water })
+    {
+
+    }
+}
+class Macchiato : Espresso
+{
+    public Macchiato() : base (new List<Ingredient>() { Ingredient.MilkFoam })
+    {
+    }
+}
+//Mocha class 
+//...
+class CustomBeverage : Espresso
+{
+    public CustomBeverage(): base (new List<Ingredient>() { })
     {
 
     }
