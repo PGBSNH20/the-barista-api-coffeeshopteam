@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+                using System.Collections.Generic;
 
 public enum CoffeeSorts
 {
@@ -41,12 +41,19 @@ public interface IBeverage{
     int WaterAmount { get; }
     // int Temperature { get; } ** Maybe we use it depending on the logic for American formula.
 
-
+   IBeverage AddBeans(Bean bean);
+    IBeverage GrindBeans();
+    IBeverage AddWater(int amount);
+    IBeverage AddMilk();
+    IBeverage AddMilkFoam();
+    IBeverage AddChocolateSyrup();
+    IBeverage Validate ();
+    IBeverage ToBeverage();
 }
 
 class Espresso : IBeverage
 {
-    public List<string> Ingredients => throw new System.NotImplementedException();
+    public List<string> Ingredients ;
 
     public string CupType => throw new System.NotImplementedException();
 }
