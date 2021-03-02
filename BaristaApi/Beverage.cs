@@ -1,8 +1,47 @@
 using System.Collections.Generic;
 
+public enum CoffeeSorts
+{
+    Robusta,
+    Arabica,
+    Liberica,
+    Excelsa
+}
+
+public enum CoffeeCup
+{
+    Espresso,
+    Small,
+    Medium,
+    Large
+}
+
+public class Bean
+{
+    public int AmmountInG { get; set; }
+    public CoffeeSorts Sort { get; set; }
+}
+
+    /* 
+     * IBeverage latte = new FluentEspresso()
+                            .AddBeans(new Bean(){ 
+                                AmountInG = 5,
+                                Sort = CoffeSorts.Robusta})
+                            .GrindBeans()
+                            .AddWater(20)
+                            .AddMilk()
+       						.Validate(e => e.Temerature < 80) ** Above 90degree's for espresso
+                        .ToBeverage();
+     */
+
 public interface IBeverage{
 	List<string> Ingredients { get; }
-    string CupType { get; }
+    CoffeeCup CupType { get; }
+    Bean Bean { get; }
+    int WaterAmount { get; }
+    // int Temperature { get; } ** Maybe we use it depending on the logic for American formula.
+
+
 }
 
 class Espresso : IBeverage
