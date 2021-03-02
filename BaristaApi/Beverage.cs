@@ -48,14 +48,25 @@ public interface IBeverage{
     IBeverage AddMilkFoam();
     IBeverage AddChocolateSyrup();
     IBeverage Validate ();
+
     IBeverage ToBeverage();
 }
 
 class Espresso : IBeverage
 {
-    public List<string> Ingredients ;
-
-    public string CupType => throw new System.NotImplementedException();
+    public List<string> Ingredients = new List<string>() ;
+    public Bean Bean = new Bean();
+    public CoffeeCup esCup => CoffeeCup.Espresso;
+    public IBeverage AddBeans(Bean bean)
+    {
+        Bean = bean;
+        return this;
+    }
+    public IBeverage AddWater()
+    {
+        Ingredients.Add("Water");
+        return this;
+    }
 }
 
 class Latte : IBeverage
