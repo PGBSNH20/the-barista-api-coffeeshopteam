@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public enum CoffeeSorts
+public enum CoffeeSort
 {
     Robusta,
     Arabica,
@@ -16,10 +16,19 @@ public enum CoffeeCup
     Large
 }
 
+public enum Ingredient
+{
+    Espresso,
+    Milk,
+    MilkFoam,
+    ChocolateSyrup,
+    Water
+}
+
 public class Bean
 {
     public int AmmountInG { get; set; }
-    public CoffeeSorts Sort { get; set; }
+    public CoffeeSort Sort { get; set; }
 }
 
 /* 
@@ -36,7 +45,8 @@ public class Bean
 
 // IBeverage espresso = new Espresso().AddWater(20).AddBeans(b => b.AmountInG = 5 && b.Sort = CoffeSorts.Robusta).AddWater().ToBravage();
 public interface IBeverage{
-	List<string> Ingredients { get; }
+	List<Ingredient> Ingredients { get; }
+   // Ingredient Ingredient { get; }
     CoffeeCup CupType { get; }
     Bean Bean { get; }
     int WaterAmount { get; }
@@ -54,7 +64,7 @@ public interface IBeverage{
 class Espresso : IBeverage
 {
     // This isnt a property, the get or set has to be there to declare a property. In the constructor you would be making the new list.
-    public List<string> Ingredients { get; }
+    public List<Ingredient> Ingredients { get; }
     // the new bean would be added in the program.cs so you are creating the new bean as perameter.
     public Bean Bean { get; private set; }
     public CoffeeCup CupType { get; }
@@ -63,17 +73,17 @@ class Espresso : IBeverage
     // contructor to be used in Program.cs
     public Espresso()
     {
-        Ingredients = new List<string>();
+        Ingredients = new List<Ingredient>();
     }
 
-    public Espresso(List<string> ingredients)
+    public Espresso(List<Ingredient> ingredients)
     {
         Ingredients = ingredients;
     }
 
-    List<string> IBeverage.Ingredients => throw new System.NotImplementedException();
+    // List<Ingredient> IBeverage.Ingredients => throw new System.NotImplementedException();
 
-    Bean IBeverage.Bean => throw new System.NotImplementedException();
+    // Bean IBeverage.Bean => throw new System.NotImplementedException();
 
     public IBeverage AddBeans(Bean bean)
     {
@@ -83,25 +93,25 @@ class Espresso : IBeverage
 
     public IBeverage AddChocolateSyrup()
     {
-        Ingredients.Add("Chocolate Syrup");
+        Ingredients.Add(Ingredient.ChocolateSyrup);
         return this;
     }
 
     public IBeverage AddMilk()
     {
-        Ingredients.Add("Milk");
+        Ingredients.Add(Ingredient.Milk);
         return this;
     }
 
     public IBeverage AddMilkFoam()
     {
-        Ingredients.Add("Milk Foam");
+        Ingredients.Add(Ingredient.MilkFoam);
         return this;
     }
 
     public IBeverage AddWater()
     {
-        Ingredients.Add("Water");
+        Ingredients.Add(Ingredient.Water);
         return this;
     }
 
@@ -125,12 +135,21 @@ class Espresso : IBeverage
             return this;
         }
         // Latte
-        if (Ingredients.Count == 1 && Ingredients.Contains("Milk"))
+        if (Ingredients.Count == 1 && Ingredients.Contains(Ingredient.Milk))
         {
-
             return new Latte();
         }
-        return this;
+        // Cappuccino
+        if (Ingredients.Count == 2 && Ingredients.Contains(Ingredient.MilkFoam) && Ingredients.Contains(Ingredient.Milk))
+        {
+            return new Cappuccino();
+        }
+        // Americano
+        if (Ingredients.Count == 1 && Ingredients.Contains(Ingredient.Water))
+        {
+            return new Americano();
+        }
+            return this;
     }
 
     public IBeverage Validate()
@@ -141,8 +160,24 @@ class Espresso : IBeverage
 
 class Latte : Espresso
 {
-    public Latte() : base(new List<string>() { "Milk" })
+    public Latte() : base(new List<Ingredient>() { Ingredient.Milk })
     {
 
     }
 } 
+
+class Cappuccino : Espresso
+{
+    public Cappuccino() : base(new List<Ingredient>() { Ingredient.Milk, Ingredient.MilkFoam})
+    {
+
+    }
+}
+
+class Americano : Espresso
+{
+    public Americano() : base(new List<Ingredient>() { Ingredient.Water })
+    {
+
+    }
+}
