@@ -12,8 +12,8 @@ namespace BaristaApi
             IBeverage espresso = new Espresso().ToBeverage();
             Console.WriteLine(espresso.GetType());
 
-            IBeverage americano = new Espresso().AddWater().ToBeverage();
-            Console.WriteLine(americano.GetType());
+            //IBeverage americano = new Espresso().AddWater().ToBeverage();
+            //Console.WriteLine(americano.GetType());
 
             /*
             IBeverage cappuccino = new Espresso().AddMilk().AddMilkFoam().ToBeverage();
