@@ -51,11 +51,13 @@ public interface IBeverage{
     CoffeeCup CupType { get; }
     Bean Bean { get; }
     int WaterAmount { get; }
-    bool IsBrewed { get; }
+    bool IsBrewed { get;}
+    bool IsGround { get; }
     // int Temperature { get; } ** Maybe we use it depending on the logic for American formula.
     IBeverage AddBeans(Bean bean);
     IBeverage GrindBeans();
     IBeverage AddWater(int amount);
+    IBeverage AddWater();
     IBeverage AddMilk();
     IBeverage AddMilkFoam();
     IBeverage AddChocolateSyrup();
@@ -72,6 +74,7 @@ class Espresso : IBeverage
     public CoffeeCup CupType { get; }
     public int WaterAmount { get; private set; }
     public bool IsBrewed { get; private set; }
+    public bool IsGround { get; private set; }
 
     // contructor to be used in Program.cs
     public Espresso()
@@ -100,7 +103,7 @@ class Espresso : IBeverage
         {
             throw new Exception("Error:  Beans Missing");
         }
-
+        IsGround = true;
         System.Console.WriteLine("Grinding Beans...");
         return this;
     }
@@ -140,9 +143,9 @@ class Espresso : IBeverage
 
     public IBeverage ToBeverage()
     {
-        if (!(WaterAmount > 0))
+        if (!IsBrewed)
         {
-            throw new Exception("Nothing to brew!");
+            throw new Exception("Add water to brew!");
         }
         // Espresso
         if (Ingredients.Count == 0)
