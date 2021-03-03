@@ -92,6 +92,28 @@ class Espresso : IBeverage
         return this;
     }
 
+    // For espresso
+    public IBeverage AddWater(int amount)
+    {
+        WaterAmount = amount;
+        if (!(WaterAmount > 0))
+        {
+            throw new Exception("Nothing to brew!");
+        }
+        return this;
+    }
+
+    public IBeverage GrindBeans()
+    {
+        if (Bean == null)
+        {
+            throw new Exception("Error:  Beans Missing");
+        }
+
+        System.Console.WriteLine("Grinding Beans...");
+        return this;
+    }
+
     public IBeverage AddChocolateSyrup()
     {
         Ingredients.Add(Ingredient.ChocolateSyrup);
@@ -110,26 +132,10 @@ class Espresso : IBeverage
         return this;
     }
 
+    // For americano
     public IBeverage AddWater()
     {
         Ingredients.Add(Ingredient.Water);
-        return this;
-    }
-
-    public IBeverage AddWater(int amount)
-    {
-        WaterAmount = amount;
-        return this;
-    }
-
-    public IBeverage GrindBeans()
-    {
-        if(Bean == null)
-        {
-            throw new Exception("Error:  Beans Missing");
-        }
-
-        System.Console.WriteLine("Grinding Beans...");        
         return this;
     }
 
@@ -167,6 +173,7 @@ class Espresso : IBeverage
 
     public IBeverage Validate()
     {
+     
         throw new System.NotImplementedException();
     }
 }

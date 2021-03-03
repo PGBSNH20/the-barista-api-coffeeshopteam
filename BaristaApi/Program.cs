@@ -6,9 +6,14 @@ namespace BaristaApi
     {
         static void Main(string[] args)
         {
-            //.AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta })
-            IBeverage latte = new Espresso().GrindBeans().AddMilk().ToBeverage();
-            Console.WriteLine(latte.GetType());
+            //
+            //IBeverage latte = new Espresso().AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta }).AddWater(0).GrindBeans().AddMilk().ToBeverage();
+           // Console.WriteLine(latte.GetType());
+            IBeverage espresso = new Espresso().ToBeverage();
+            Console.WriteLine(espresso.GetType());
+
+            IBeverage americano = new Espresso().AddWater().ToBeverage();
+            Console.WriteLine(americano.GetType());
 
             /*
             IBeverage cappuccino = new Espresso().AddMilk().AddMilkFoam().ToBeverage();
