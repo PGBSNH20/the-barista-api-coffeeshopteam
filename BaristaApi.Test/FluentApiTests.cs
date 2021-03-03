@@ -28,5 +28,23 @@ namespace BaristaApi.Tests
 
         }
 
+        [Fact]
+        public void When_AddingMilkAndMilkFoamAndBeans_Expect_Cappuccino()
+        {
+            // Act
+            var cappuccino = new Espresso().AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta }).AddWater(25).AddMilk().AddMilkFoam().ToBeverage();
+            // Assert
+            Assert.IsType<Cappuccino>(cappuccino);
+        }
+
+        [Fact]
+        public void When_AddingWaterAndBeans_Expect_Americano()
+        {
+            // Act
+            var americano = new Espresso().AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta }).AddWater(25).AddWater().ToBeverage();
+            // Assert
+            Assert.IsType<Americano>(americano);
+        }
+
     }
 }
