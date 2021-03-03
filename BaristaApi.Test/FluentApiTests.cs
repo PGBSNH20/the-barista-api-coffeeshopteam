@@ -45,6 +45,22 @@ namespace BaristaApi.Tests
             // Assert
             Assert.IsType<Americano>(americano);
         }
+        [Fact]
+        public void When_AddingWaterAndBeansandMilkFoam_Expect_Macchiato()
+        {
+            // Act
+            var macchiato = new Espresso().AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta }).AddWater(25).AddMilkFoam().ToBeverage();
+            // Assert
+            Assert.IsType<Macchiato>(macchiato);
+        }
 
+        [Fact]
+        public void TestingException_NoBean()
+        {
+            // Act
+            var beverage = new Espresso().AddWater(25).AddMilkFoam().GrindBeans().ToBeverage();
+            // Assert
+            Assert.IsType<Espresso>(beverage);
+        }
     }
 }
