@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public enum CoffeeSort
 {
@@ -65,7 +66,7 @@ public interface IBeverage{
     IBeverage ToBeverage();
 }
 
-class Espresso : IBeverage
+public class Espresso : IBeverage
 {
     // This isnt a property, the get or set has to be there to declare a property. In the constructor you would be making the new list.
     public List<Ingredient> Ingredients { get; }
@@ -104,7 +105,7 @@ class Espresso : IBeverage
             throw new Exception("Error:  Beans Missing");
         }
         IsGround = true;
-        System.Console.WriteLine("Grinding Beans...");
+        Console.WriteLine("Grinding Beans...");
         return this;
     }
 
@@ -173,7 +174,10 @@ class Espresso : IBeverage
             return new Macchiato(); 
         }
         //Mocha 
-        //...
+        if (Ingredients.Count == 2 && Ingredients.Contains(Ingredient.ChocolateSyrup) && Ingredients.Contains(Ingredient.Milk))
+        {
+            return new Mocha();
+        }
         return new CustomBeverage();
     }
 
@@ -184,7 +188,7 @@ class Espresso : IBeverage
     }
 }
 
-class Latte : Espresso
+public class Latte : Espresso
 {
     public Latte() : base(new List<Ingredient>() { Ingredient.Milk })
     {
@@ -192,7 +196,7 @@ class Latte : Espresso
     }
 } 
 
-class Cappuccino : Espresso
+public class Cappuccino : Espresso
 {
     public Cappuccino() : base(new List<Ingredient>() { Ingredient.Milk, Ingredient.MilkFoam})
     {
@@ -200,22 +204,27 @@ class Cappuccino : Espresso
     }
 }
 
-class Americano : Espresso
+public class Americano : Espresso
 {
     public Americano() : base(new List<Ingredient>() { Ingredient.Water })
     {
 
     }
 }
-class Macchiato : Espresso
+public class Macchiato : Espresso
 {
     public Macchiato() : base (new List<Ingredient>() { Ingredient.MilkFoam })
     {
     }
 }
 //Mocha class 
-//...
-class CustomBeverage : Espresso
+public class Mocha : Espresso
+{
+    public Mocha() : base(new List<Ingredient>() { Ingredient.ChocolateSyrup, Ingredient.Milk })
+    {
+    }
+}
+public class CustomBeverage : Espresso
 {
     public CustomBeverage(): base (new List<Ingredient>() { })
     {

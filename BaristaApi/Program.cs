@@ -9,7 +9,7 @@ namespace BaristaApi
             //
             //IBeverage latte = new Espresso().AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta }).AddWater(0).GrindBeans().AddMilk().ToBeverage();
            // Console.WriteLine(latte.GetType());
-            IBeverage espresso = new Espresso().AddWater(30).ToBeverage();
+            IBeverage espresso = new Espresso().AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta }).GrindBeans().AddWater(30).AddMilk().ToBeverage().AddWater();
             Console.WriteLine(espresso.GetType());
 
             //IBeverage americano = new Espresso().AddWater().ToBeverage();
@@ -33,7 +33,7 @@ namespace BaristaApi
                         .GrindBeans()
                         .AddWater(20)
                         .AddMilk()
-                        .Validate(e => e.Temerature < 80) ** Above 90degree's for espresso
+                        .Validate(e => e.IsGrinded < 80) ** Above 90degree's for espresso
                     .ToBeverage();
  */
 
