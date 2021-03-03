@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 public enum CoffeeSort
@@ -123,7 +124,12 @@ class Espresso : IBeverage
 
     public IBeverage GrindBeans()
     {
-        System.Console.WriteLine("Grinding Beans...");
+        if(Bean == null)
+        {
+            throw new Exception("Error:  Beans Missing");
+        }
+
+        System.Console.WriteLine("Grinding Beans...");        
         return this;
     }
 
