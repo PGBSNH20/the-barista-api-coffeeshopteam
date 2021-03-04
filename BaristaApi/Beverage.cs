@@ -20,7 +20,6 @@ public enum CoffeeCup
 
 public enum Ingredient
 {
-    Espresso,
     Milk,
     MilkFoam,
     ChocolateSyrup,
@@ -29,7 +28,7 @@ public enum Ingredient
 
 public class Bean
 {
-    public int AmmountInG { get; set; }
+    public int AmountInG { get; set; }
     public CoffeeSort Sort { get; set; }
 }
 
@@ -42,7 +41,7 @@ public class Bean
                         .AddWater(20)
                         .AddMilk()
                         .Validate(e => e.Temerature < 80) ** Above 90degree's for espresso
-                    .ToBeverage();
+                        .ToBeverage();
  */
 
 // IBeverage espresso = new Espresso().AddWater(20).AddBeans(b => b.AmountInG = 5 && b.Sort = CoffeSorts.Robusta).AddWater().ToBravage();
@@ -52,12 +51,14 @@ public interface IBeverage{
     CoffeeCup CupType { get; }
     Bean Bean { get; }
     int WaterAmount { get; }
-    bool IsBrewed { get;}
+    bool IsBrewed { get; }
     bool IsGround { get; }
     // int Temperature { get; } ** Maybe we use it depending on the logic for American formula.
     IBeverage AddBeans(Bean bean);
     IBeverage GrindBeans();
     IBeverage AddWater(int amount);
+    bool HasWater();
+    IBeverage BrewCoffee();
     IBeverage AddWater();
     IBeverage AddMilk();
     IBeverage AddMilkFoam();
@@ -88,10 +89,6 @@ public class Espresso : IBeverage
         Ingredients = ingredients;
     }
 
-    // List<Ingredient> IBeverage.Ingredients => throw new System.NotImplementedException();
-
-    // Bean IBeverage.Bean => throw new System.NotImplementedException();
-
     public IBeverage AddBeans(Bean bean)
     {
         Bean = bean;
@@ -105,15 +102,35 @@ public class Espresso : IBeverage
             throw new Exception("Error:  Beans Missing");
         }
         IsGround = true;
-        Console.WriteLine("Grinding Beans...");
         return this;
     }
 
     // For espresso
     public IBeverage AddWater(int amount)
     {
-        WaterAmount = amount;
-        IsBrewed = true;
+        WaterAmount += amount;
+        return this;
+    }
+
+    public bool HasWater()
+    {
+        return WaterAmount > 0;
+    }
+
+    public IBeverage BrewCoffee()
+    {
+        if (!HasWater())
+        {
+            throw new Exception("Error: missing water");
+        }
+        if (!IsGround)
+        {
+            throw new Exception("Error: missing ground beans");
+        }
+        if (HasWater() && IsGround)
+        {
+            IsBrewed = true;
+        }
         return this;
     }
 
@@ -146,7 +163,7 @@ public class Espresso : IBeverage
     {
         if (!IsBrewed)
         {
-            throw new Exception("Add water to brew!");
+            throw new Exception("Error: coffee hasn't been brewed yet");
         }
         // Espresso
         if (Ingredients.Count == 0)
@@ -171,7 +188,7 @@ public class Espresso : IBeverage
         // Macchiato
         if (Ingredients.Count == 1 && Ingredients.Contains(Ingredient.MilkFoam))
         {
-            return new Macchiato(); 
+            return new Macchiato();
         }
         //Mocha 
         if (Ingredients.Count == 2 && Ingredients.Contains(Ingredient.ChocolateSyrup) && Ingredients.Contains(Ingredient.Milk))
@@ -183,10 +200,11 @@ public class Espresso : IBeverage
 
     public IBeverage Validate()
     {
-     
+
         throw new System.NotImplementedException();
     }
 }
+
 
 public class Latte : Espresso
 {
