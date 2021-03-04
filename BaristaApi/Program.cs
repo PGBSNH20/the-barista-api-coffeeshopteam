@@ -19,8 +19,6 @@ namespace BaristaApi
                 .ToBeverage();
             Console.WriteLine(espresso.GetType());
 
-            // e=> e.IsGround && e.IsBrewed
-
             //IBeverage americano = new Espresso().AddWater().ToBeverage();
             //Console.WriteLine(americano.GetType());
 
