@@ -219,18 +219,21 @@ public class Americano : Espresso
 
     }
 }
+
 public class Macchiato : Espresso
 {
     public Macchiato() : base (new List<Ingredient>() { Ingredient.MilkFoam })
     {
     }
 }
+
 public class Mocha : Espresso
 {
     public Mocha() : base(new List<Ingredient>() { Ingredient.ChocolateSyrup, Ingredient.Milk })
     {
     }
 }
+
 public class CustomBeverage : Espresso
 {
     public CustomBeverage(): base (new List<Ingredient>() { })

@@ -69,7 +69,7 @@ namespace BaristaApi.Tests
         public void When_AddingWaterAndBeansandChocolateSyrupandMilk_Expect_Mocha()
         {
             // Act
-            var mocha = new Espresso().AddBeans(new Bean() { AmountInG = 9, Sort = CoffeeSort.Robusta }).AddWater(25).AddChocolateSyrup().AddMilk().ToBeverage();
+            var mocha = new Espresso().AddBeans(new Bean() { AmountInG = 9, Sort = CoffeeSort.Robusta }).GrindBeans().AddWater(25).BrewCoffee().AddChocolateSyrup().AddMilk().ToBeverage();
             // Assert
             Assert.IsType<Mocha>(mocha);
         }
