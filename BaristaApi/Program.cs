@@ -13,16 +13,16 @@ namespace BaristaApi
             IBeverage espresso = new Espresso().AddBeans(new Bean() { AmountInG = 9, Sort = CoffeeSort.Robusta }).GrindBeans().AddWater(30).BrewCoffee().ToBeverage();
             Console.WriteLine(espresso.GetType());
 
-            IBeverage espresso = 
+            IBeverage espresso2 = 
                 new Espresso()
-                .AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta })
+                .AddBeans(new Bean() { AmountInG = 9, Sort = CoffeeSort.Robusta })
                 .GrindBeans()
                 .AddWater(30)
                 .AddMilk()
                 .ToBeverage()
                 .AddWater();
 
-            Console.WriteLine(espresso.GetType());
+            Console.WriteLine(espresso2.GetType());
             IBeverage americano = new Espresso().AddWater().ToBeverage();
             //Console.WriteLine(americano.GetType());
 
