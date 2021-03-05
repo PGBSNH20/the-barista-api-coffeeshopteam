@@ -9,18 +9,18 @@ namespace BaristaApi
             //
             //IBeverage latte = new Espresso().AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta }).AddWater(0).GrindBeans().AddMilk().ToBeverage();
            // Console.WriteLine(latte.GetType());
-           /* IBeverage espresso = 
+
+            IBeverage espresso = 
                 new Espresso()
-                .AddBeans(new Bean() { AmountInG = 9, Sort = CoffeeSort.Robusta })
+                .AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta })
                 .GrindBeans()
                 .AddWater(30)
                 .AddMilk()
-                .Validate(e => e.IsGround && e.IsBrewed && e.WaterAmount > 40)
-                .ToBeverage();
+                .ToBeverage()
+                .AddWater();
 
-            Console.WriteLine(espresso.GetType());*/
-
-            //IBeverage americano = new Espresso().AddWater().ToBeverage();
+            Console.WriteLine(espresso.GetType());
+            IBeverage americano = new Espresso().AddWater().ToBeverage();
             //Console.WriteLine(americano.GetType());
 
             /*

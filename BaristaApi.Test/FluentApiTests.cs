@@ -55,7 +55,18 @@ namespace BaristaApi.Tests
         }
 
         [Fact]
-        public void Testing_Exception_NoBean()
+
+        public void When_AddingWaterAndBeansandChocolateSyrupandMilk_Expect_Mocha()
+        {
+            // Act
+            var mocha = new Espresso().AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta }).AddWater(25).AddChocolateSyrup().AddMilk().ToBeverage();
+            // Assert
+            Assert.IsType<Mocha>(mocha);
+        }
+
+        [Fact]
+        public void TestingException_NoBean()
+
         {
             // Expecting fail due to no beans
             // Act
