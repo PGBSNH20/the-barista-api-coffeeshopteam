@@ -32,21 +32,20 @@ public class Bean
     public CoffeeSort Sort { get; set; }
 }
 
-public interface IBeverage{
+public interface IBeverage
+{
 	List<Ingredient> Ingredients { get; }
-   // Ingredient Ingredient { get; }
     CoffeeCup CupType { get; }
     Bean Bean { get; }
     int WaterAmount { get; }
     bool IsBrewed { get; }
     bool IsGround { get; }
-    // int Temperature { get; } ** Maybe we use it depending on the logic for Americano formula.
     IBeverage AddBeans(Bean bean);
     IBeverage GrindBeans();
     IBeverage AddWater(int amount);
     bool HasWater();
     IBeverage BrewCoffee();
-    IBeverage AddWater();
+    IBeverage AddsWaterAsIngredient();
     IBeverage AddMilk();
     IBeverage AddMilkFoam();
     IBeverage AddChocolateSyrup();
@@ -56,16 +55,13 @@ public interface IBeverage{
 
 public class Espresso : IBeverage
 {
-    // This isnt a property, the get or set has to be there to declare a property. In the constructor you would be making the new list.
     public List<Ingredient> Ingredients { get; }
-    // the new bean would be added in the program.cs so you are creating the new bean as perameter.
     public Bean Bean { get; private set; }
     public CoffeeCup CupType { get; }
     public int WaterAmount { get; private set; }
     public bool IsBrewed { get; private set; }
     public bool IsGround { get; private set; }
 
-    // contructor to be used in Program.cs
     public Espresso()
     {
         Ingredients = new List<Ingredient>();
@@ -92,10 +88,17 @@ public class Espresso : IBeverage
         return this;
     }
 
-    // For espresso
+    // Adds water to brew espresso
     public IBeverage AddWater(int amount)
     {
         WaterAmount += amount;
+        return this;
+    }
+
+    // Adds water as ingredient, after brewing for Americano
+    public IBeverage AddsWaterAsIngredient()
+    {
+        Ingredients.Add(Ingredient.Water);
         return this;
     }
 
@@ -110,14 +113,13 @@ public class Espresso : IBeverage
         {
             throw new Exception("Error: missing water");
         }
+
         if (!IsGround)
         {
             throw new Exception("Error: missing ground beans");
         }
-        if (HasWater() && IsGround)
-        {
-            IsBrewed = true;
-        }
+
+        IsBrewed = true;
         return this;
     }
 
@@ -139,10 +141,12 @@ public class Espresso : IBeverage
         return this;
     }
 
-    // For americano
-    public IBeverage AddWater()
+    public IBeverage Validate(Func<IBeverage, bool> validator)
     {
-        Ingredients.Add(Ingredient.Water);
+        if (!validator(this))
+        {
+            throw new Exception("Error: Something's missing");
+        }
         return this;
     }
 
@@ -152,49 +156,44 @@ public class Espresso : IBeverage
         {
             throw new Exception("Error: coffee hasn't been brewed yet");
         }
-        // Espresso
+
         if (Ingredients.Count == 0)
         {
             return this;
         }
-        // Latte
-        if (Ingredients.Count == 1 && Ingredients.Contains(Ingredient.Milk))
-        {
-            return new Latte();
-        }
-        // Cappuccino
-        if (Ingredients.Count == 2 && Ingredients.Contains(Ingredient.MilkFoam) && Ingredients.Contains(Ingredient.Milk))
-        {
-            return new Cappuccino();
-        }
-        // Americano
-        if (Ingredients.Count == 1 && Ingredients.Contains(Ingredient.Water))
-        {
-            return new Americano();
-        }
-        // Macchiato
-        if (Ingredients.Count == 1 && Ingredients.Contains(Ingredient.MilkFoam))
-        {
-            return new Macchiato();
-        }
-        //Mocha 
-        if (Ingredients.Count == 2 && Ingredients.Contains(Ingredient.ChocolateSyrup) && Ingredients.Contains(Ingredient.Milk))
-        {
-            return new Mocha();
-        }
-        return new CustomBeverage();
-    }
 
-    public IBeverage Validate(Func<IBeverage, bool> validator)
-    {
-        if (!validator(this))
+        Type coffeeType = CoffeeTypes.GetCoffeeType(Ingredients);
+        if (coffeeType != typeof(CustomBeverage))
         {
-            throw new Exception("Error: Something's missing");
+            return (IBeverage)Activator.CreateInstance(coffeeType);
         }
-        return this;
-    }
+
+        return new CustomBeverage(Ingredients);
+     }   
 }
 
+public static class CoffeeTypes
+{
+    static Dictionary<Type, Ingredient[]> coffeeTypes = new Dictionary<Type, Ingredient[]>()
+    { { typeof(Latte), new Ingredient[] { Ingredient.Milk } },
+      { typeof(Cappuccino), new Ingredient[] { Ingredient.MilkFoam, Ingredient.Milk } },
+      { typeof(Americano), new Ingredient[] { Ingredient.Water } },
+      { typeof(Macchiato), new Ingredient[] { Ingredient.MilkFoam } },
+      { typeof(Mocha), new Ingredient[] { Ingredient.ChocolateSyrup, Ingredient.Milk } }
+    };
+    
+    public static Type GetCoffeeType(List<Ingredient> ingredients)
+    {
+        foreach (var coffeeType in coffeeTypes)
+        {
+            if (coffeeType.Value.Length == ingredients.Count && coffeeType.Value.All(ingredients.Contains))
+            {
+                return coffeeType.Key;
+            }
+        }
+        return typeof(CustomBeverage);
+    }
+}
 
 public class Latte : Espresso
 {
@@ -206,7 +205,7 @@ public class Latte : Espresso
 
 public class Cappuccino : Espresso
 {
-    public Cappuccino() : base(new List<Ingredient>() { Ingredient.Milk, Ingredient.MilkFoam})
+    public Cappuccino() : base(new List<Ingredient>() { Ingredient.Milk, Ingredient.MilkFoam })
     {
 
     }
@@ -236,8 +235,7 @@ public class Mocha : Espresso
 
 public class CustomBeverage : Espresso
 {
-    public CustomBeverage(): base (new List<Ingredient>() { })
+    public CustomBeverage(List<Ingredient> ingredients): base (ingredients)
     {
-
     }
 }
