@@ -6,7 +6,8 @@ namespace BaristaApi.Tests
     public class FluentApiTests
     {
         [Fact]
-        public void When_Adding_Water_And_Beans_Expect_Espresso(){
+        public void When_Adding_Water_And_Beans_Expect_Espresso()
+        {
 
             //Pseudo code
             // Act
@@ -64,7 +65,7 @@ namespace BaristaApi.Tests
             Exception exception = Assert.Throws<Exception>(action);
             Assert.Equal("Error: missing water", exception.Message);
         }
-   
+
         [Fact]
         public void When_AddingWaterAndBeansandChocolateSyrupandMilk_Expect_Mocha()
         {
@@ -83,6 +84,17 @@ namespace BaristaApi.Tests
             var beverage = new Espresso().AddWater(25).GrindBeans().BrewCoffee().AddMilkFoam().ToBeverage();
             // Assert
             Assert.IsType<Espresso>(beverage);
+        }
+
+        [Fact]
+        public void TestingValidate()
+
+        {
+            //Pseudo code
+            // Act
+            var espresso = new Espresso().AddBeans(new Bean() { AmountInG = 9, Sort = CoffeeSort.Robusta }).GrindBeans().AddWater(30).BrewCoffee().Validate(e => e.WaterAmount < 15).ToBeverage();
+            // Assert
+            Assert.IsType<Espresso>(espresso);
         }
     }
 }
