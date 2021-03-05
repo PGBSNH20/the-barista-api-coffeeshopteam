@@ -9,6 +9,7 @@ namespace BaristaApi
             //
             //IBeverage latte = new Espresso().AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta }).AddWater(0).GrindBeans().AddMilk().ToBeverage();
            // Console.WriteLine(latte.GetType());
+
             IBeverage espresso = 
                 new Espresso()
                 .AddBeans(new Bean() { AmmountInG = 9, Sort = CoffeeSort.Robusta })
@@ -19,8 +20,7 @@ namespace BaristaApi
                 .AddWater();
 
             Console.WriteLine(espresso.GetType());
-
-            //IBeverage americano = new Espresso().AddWater().ToBeverage();
+            IBeverage americano = new Espresso().AddWater().ToBeverage();
             //Console.WriteLine(americano.GetType());
 
             /*
@@ -32,18 +32,6 @@ namespace BaristaApi
             Console.WriteLine(macchiato.GetType());
             IBeverage custom = new Espresso().AddMilkFoam().AddChocolateSyrup().ToBeverage();
             Console.WriteLine(custom.GetType()); */
-
-            /* 
- * IBeverage latte = new FluentEspresso()
-                        .AddBeans(new Bean(){ 
-                            AmountInG = 5,
-                            Sort = CoffeSorts.Robusta})
-                        .GrindBeans()
-                        .AddWater(20)
-                        .AddMilk()
-                        .Validate(e => e.IsGrinded < 80) ** Above 90degree's for espresso
-                    .ToBeverage();
- */
 
             //IBeverage espresso = new Espresso().AddWater(20).AddBeans(b => b.AmountInG = 5 && b.Sort = CoffeSorts.Robusta).ToBravage();
             //espresso is type of Espresso

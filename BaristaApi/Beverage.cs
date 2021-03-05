@@ -29,23 +29,10 @@ public enum Ingredient
 
 public class Bean
 {
-    public int AmmountInG { get; set; }
+    public int AmountInG { get; set; }
     public CoffeeSort Sort { get; set; }
 }
 
-/* 
- * IBeverage latte = new FluentEspresso()
-                        .AddBeans(new Bean(){ 
-                            AmountInG = 5,
-                            Sort = CoffeSorts.Robusta})
-                        .GrindBeans()
-                        .AddWater(20)
-                        .AddMilk()
-                        .Validate(e => e.Temerature < 80) ** Above 90degree's for espresso
-                    .ToBeverage();
- */
-
-// IBeverage espresso = new Espresso().AddWater(20).AddBeans(b => b.AmountInG = 5 && b.Sort = CoffeSorts.Robusta).AddWater().ToBravage();
 public interface IBeverage{
 	List<Ingredient> Ingredients { get; }
    // Ingredient Ingredient { get; }
@@ -54,7 +41,7 @@ public interface IBeverage{
     int WaterAmount { get; }
     bool IsBrewed { get;}
     bool IsGround { get; }
-    // int Temperature { get; } ** Maybe we use it depending on the logic for American formula.
+    // int Temperature { get; } ** Maybe we use it depending on the logic for Americano formula.
     IBeverage AddBeans(Bean bean);
     IBeverage GrindBeans();
     IBeverage AddWater(int amount);
@@ -62,7 +49,7 @@ public interface IBeverage{
     IBeverage AddMilk();
     IBeverage AddMilkFoam();
     IBeverage AddChocolateSyrup();
-    IBeverage Validate ();
+    IBeverage Validate (Func<IBeverage, bool> validator);
     IBeverage ToBeverage();
 }
 
@@ -105,7 +92,7 @@ public class Espresso : IBeverage
             throw new Exception("Error:  Beans Missing");
         }
         IsGround = true;
-        Console.WriteLine("Grinding Beans...");
+        // Console.WriteLine("Grinding Beans...");
         return this;
     }
 
@@ -144,10 +131,6 @@ public class Espresso : IBeverage
 
     public IBeverage ToBeverage()
     {
-        if (!IsBrewed)
-        {
-            throw new Exception("Add water to brew!");
-        }
         // Espresso
         if (Ingredients.Count == 0)
         {
@@ -181,10 +164,14 @@ public class Espresso : IBeverage
         return new CustomBeverage();
     }
 
-    public IBeverage Validate()
+    public IBeverage Validate(Func<IBeverage, bool> validator)
     {
-     
-        throw new System.NotImplementedException();
+        if (!validator(this))
+        {
+            throw new Exception("Error: Something's missing");
+        }
+
+        return this;
     }
 }
 
