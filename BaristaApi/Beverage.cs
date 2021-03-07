@@ -161,37 +161,31 @@ public class Espresso : IBeverage
         {
             return this;
         }
-
-        Type coffeeType = CoffeeTypes.GetCoffeeType(Ingredients);
-        if (coffeeType != typeof(CustomBeverage))
-        {
-            return (IBeverage)Activator.CreateInstance(coffeeType);
-        }
-
-        return new CustomBeverage(Ingredients);
+        IBeverage coffeeBeverage = CoffeeBeverages.GetCoffeeType(Ingredients);
+        return coffeeBeverage;
      }   
 }
 
-public static class CoffeeTypes
+public static class CoffeeBeverages
 {
-    static Dictionary<Type, Ingredient[]> coffeeTypes = new Dictionary<Type, Ingredient[]>()
-    { { typeof(Latte), new Ingredient[] { Ingredient.Milk } },
-      { typeof(Cappuccino), new Ingredient[] { Ingredient.MilkFoam, Ingredient.Milk } },
-      { typeof(Americano), new Ingredient[] { Ingredient.Water } },
-      { typeof(Macchiato), new Ingredient[] { Ingredient.MilkFoam } },
-      { typeof(Mocha), new Ingredient[] { Ingredient.ChocolateSyrup, Ingredient.Milk } }
+    static Dictionary<IBeverage, Ingredient[]> coffeeDictionary = new Dictionary<IBeverage, Ingredient[]>()
+    { { new Latte(), new Ingredient[] { Ingredient.Milk } },
+      { new Cappuccino(), new Ingredient[] { Ingredient.MilkFoam, Ingredient.Milk } },
+      { new Americano(), new Ingredient[] { Ingredient.Water } },
+      { new Macchiato(), new Ingredient[] { Ingredient.MilkFoam } },
+      { new Mocha(), new Ingredient[] { Ingredient.ChocolateSyrup, Ingredient.Milk } }
     };
     
-    public static Type GetCoffeeType(List<Ingredient> ingredients)
+    public static IBeverage GetCoffeeType(List<Ingredient> ingredients)
     {
-        foreach (var coffeeType in coffeeTypes)
+        foreach (var coffeeType in coffeeDictionary)
         {
             if (coffeeType.Value.Length == ingredients.Count && coffeeType.Value.All(ingredients.Contains))
             {
                 return coffeeType.Key;
             }
         }
-        return typeof(CustomBeverage);
+        return (new CustomBeverage(ingredients));
     }
 }
 

@@ -57,6 +57,13 @@ namespace BaristaApi.Tests
         }
 
         [Fact]
+        public void When_Adding_Water_And_Beans_And_ChocolateSyrup_Expect_CustomBeverage()
+        {
+            var customBeverage = new Espresso().AddBeans(new Bean() { AmountInG = 9, Sort = CoffeeSort.Robusta }).GrindBeans().AddWater(25).BrewCoffee().AddChocolateSyrup().ToBeverage();
+            Assert.IsType<CustomBeverage>(customBeverage);
+        }
+
+        [Fact]
         public void TestingException_NoBean()
         {
             // Expecting fail due to no beans
