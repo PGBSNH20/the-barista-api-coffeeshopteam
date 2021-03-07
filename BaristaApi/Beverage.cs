@@ -157,12 +157,14 @@ public class Espresso : IBeverage
             throw new Exception("Error: coffee hasn't been brewed yet");
         }
 
-        if (Ingredients.Count == 0)
+        Type coffeeType = CoffeeTypes.GetCoffeeType(Ingredients);
+
+        // Ingredients for espresso
+        if (coffeeType == typeof(Espresso))
         {
             return this;
         }
 
-        Type coffeeType = CoffeeTypes.GetCoffeeType(Ingredients);
         if (coffeeType != typeof(CustomBeverage))
         {
             return (IBeverage)Activator.CreateInstance(coffeeType);
@@ -184,6 +186,11 @@ public static class CoffeeTypes
     
     public static Type GetCoffeeType(List<Ingredient> ingredients)
     {
+        if (ingredients.Count == 0)
+        {
+            return typeof(Espresso);
+        }
+
         foreach (var coffeeType in coffeeTypes)
         {
             if (coffeeType.Value.Length == ingredients.Count && coffeeType.Value.All(ingredients.Contains))
