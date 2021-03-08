@@ -157,50 +157,84 @@ public class Espresso : IBeverage
             throw new Exception("Error: coffee hasn't been brewed yet");
         }
 
-        Type coffeeType = CoffeeTypes.GetCoffeeType(Ingredients);
-
-        // Ingredients for espresso
-        if (coffeeType == typeof(Espresso))
+        if (Ingredients.Count == 0)
         {
             return this;
         }
-
-        if (coffeeType != typeof(CustomBeverage))
+        // Latte
+        if (Ingredients.Count == 1 && Ingredients.Contains(Ingredient.Milk))
         {
-            return (IBeverage)Activator.CreateInstance(coffeeType);
+            return new Latte();
         }
-
+        // Americano
+        if (Ingredients.Count == 1 && Ingredients.Contains(Ingredient.Water))
+        {
+            return new Americano();
+        }
+        // Mocha
+        Ingredient[] mochaIngredients = { Ingredient.Milk, Ingredient.ChocolateSyrup };
+        if (Ingredients.Count == 2 && Ingredients.All(mochaIngredients.Contains))
+        {
+            return new Mocha();
+        }
+        // Cappuccino
+        Ingredient[] capuccinoIngredients = { Ingredient.Milk, Ingredient.MilkFoam };
+        if (Ingredients.Count == 2 && Ingredients.All(capuccinoIngredients.Contains))
+        {
+            return new Cappuccino();
+        }
+        // Macchiato
+        if (Ingredients.Count == 1 && Ingredients.Contains(Ingredient.MilkFoam))
+        {
+            return new Macchiato();
+        }
+        // the return this will be changed to custom beverage;
         return new CustomBeverage(Ingredients);
-     }   
-}
 
-public static class CoffeeTypes
-{
-    static Dictionary<Type, Ingredient[]> coffeeTypes = new Dictionary<Type, Ingredient[]>()
-    { { typeof(Latte), new Ingredient[] { Ingredient.Milk } },
-      { typeof(Cappuccino), new Ingredient[] { Ingredient.MilkFoam, Ingredient.Milk } },
-      { typeof(Americano), new Ingredient[] { Ingredient.Water } },
-      { typeof(Macchiato), new Ingredient[] { Ingredient.MilkFoam } },
-      { typeof(Mocha), new Ingredient[] { Ingredient.ChocolateSyrup, Ingredient.Milk } }
-    };
-    
-    public static Type GetCoffeeType(List<Ingredient> ingredients)
-    {
-        if (ingredients.Count == 0)
-        {
-            return typeof(Espresso);
-        }
+        //   Type coffeeType = CoffeeTypes.GetCoffeeType(Ingredients);
 
-        foreach (var coffeeType in coffeeTypes)
-        {
-            if (coffeeType.Value.Length == ingredients.Count && coffeeType.Value.All(ingredients.Contains))
-            {
-                return coffeeType.Key;
-            }
-        }
-        return typeof(CustomBeverage);
+        //   // Ingredients for espresso
+        //   if (coffeeType == typeof(Espresso))
+        //   {
+        //       return this;
+        //   }
+
+        //   if (coffeeType != typeof(CustomBeverage))
+        //   {
+        //       return (IBeverage)Activator.CreateInstance(coffeeType);
+        //   }
+
+        //   return new CustomBeverage(Ingredients);
     }
 }
+
+//public static class CoffeeTypes
+//{
+//    static Dictionary<Type, Ingredient[]> coffeeTypes = new Dictionary<Type, Ingredient[]>()
+//    { { typeof(Latte), new Ingredient[] { Ingredient.Milk } },
+//      { typeof(Cappuccino), new Ingredient[] { Ingredient.MilkFoam, Ingredient.Milk } },
+//      { typeof(Americano), new Ingredient[] { Ingredient.Water } },
+//      { typeof(Macchiato), new Ingredient[] { Ingredient.MilkFoam } },
+//      { typeof(Mocha), new Ingredient[] { Ingredient.ChocolateSyrup, Ingredient.Milk } }
+//    };
+    
+//    public static Type GetCoffeeType(List<Ingredient> ingredients)
+//    {
+//        if (ingredients.Count == 0)
+//        {
+//            return typeof(Espresso);
+//        }
+
+//        foreach (var coffeeType in coffeeTypes)
+//        {
+//            if (coffeeType.Value.Length == ingredients.Count && coffeeType.Value.All(ingredients.Contains))
+//            {
+//                return coffeeType.Key;
+//            }
+//        }
+//        return typeof(CustomBeverage);
+//    }
+//}
 
 public class Latte : Espresso
 {
