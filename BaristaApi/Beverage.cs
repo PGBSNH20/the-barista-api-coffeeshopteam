@@ -188,53 +188,10 @@ public class Espresso : IBeverage
         {
             return new Macchiato();
         }
-        // the return this will be changed to custom beverage;
         return new CustomBeverage(Ingredients);
 
-        //   Type coffeeType = CoffeeTypes.GetCoffeeType(Ingredients);
-
-        //   // Ingredients for espresso
-        //   if (coffeeType == typeof(Espresso))
-        //   {
-        //       return this;
-        //   }
-
-        //   if (coffeeType != typeof(CustomBeverage))
-        //   {
-        //       return (IBeverage)Activator.CreateInstance(coffeeType);
-        //   }
-
-        //   return new CustomBeverage(Ingredients);
     }
 }
-
-//public static class CoffeeTypes
-//{
-//    static Dictionary<Type, Ingredient[]> coffeeTypes = new Dictionary<Type, Ingredient[]>()
-//    { { typeof(Latte), new Ingredient[] { Ingredient.Milk } },
-//      { typeof(Cappuccino), new Ingredient[] { Ingredient.MilkFoam, Ingredient.Milk } },
-//      { typeof(Americano), new Ingredient[] { Ingredient.Water } },
-//      { typeof(Macchiato), new Ingredient[] { Ingredient.MilkFoam } },
-//      { typeof(Mocha), new Ingredient[] { Ingredient.ChocolateSyrup, Ingredient.Milk } }
-//    };
-    
-//    public static Type GetCoffeeType(List<Ingredient> ingredients)
-//    {
-//        if (ingredients.Count == 0)
-//        {
-//            return typeof(Espresso);
-//        }
-
-//        foreach (var coffeeType in coffeeTypes)
-//        {
-//            if (coffeeType.Value.Length == ingredients.Count && coffeeType.Value.All(ingredients.Contains))
-//            {
-//                return coffeeType.Key;
-//            }
-//        }
-//        return typeof(CustomBeverage);
-//    }
-//}
 
 public class Latte : Espresso
 {
