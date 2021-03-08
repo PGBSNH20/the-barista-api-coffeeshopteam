@@ -157,92 +157,97 @@ public class Espresso : IBeverage
             throw new Exception("Error: coffee hasn't been brewed yet");
         }
 
-        Type coffeeType = CoffeeTypes.GetCoffeeType(Ingredients);
+        string coffeeType = CoffeeTypes.GetCoffeeType(Ingredients);
 
-        // Ingredients for espresso
-        if (coffeeType == typeof(Espresso))
+        switch (coffeeType)
         {
-            return this;
+            case "Espresso":
+                return this;
+            case "Latte":
+                return new Latte();
+            case "Cappuccino":
+                return new Cappuccino();
+            case "Americano":
+                return new Americano();
+            case "Macchiato":
+                return new Macchiato();
+            case "Mocha":
+                return new Mocha();
+            default:
+                return new CustomBeverage(Ingredients);
         }
+    }
 
-        if (coffeeType != typeof(CustomBeverage))
-        {
-            return (IBeverage)Activator.CreateInstance(coffeeType);
-        }
-
-        return new CustomBeverage(Ingredients);
-     }   
-}
-
-public static class CoffeeTypes
-{
-    static Dictionary<Type, Ingredient[]> coffeeTypes = new Dictionary<Type, Ingredient[]>()
-    { { typeof(Latte), new Ingredient[] { Ingredient.Milk } },
-      { typeof(Cappuccino), new Ingredient[] { Ingredient.MilkFoam, Ingredient.Milk } },
-      { typeof(Americano), new Ingredient[] { Ingredient.Water } },
-      { typeof(Macchiato), new Ingredient[] { Ingredient.MilkFoam } },
-      { typeof(Mocha), new Ingredient[] { Ingredient.ChocolateSyrup, Ingredient.Milk } }
+    public static class CoffeeTypes
+    {
+        static Dictionary<string, Ingredient[]> coffeeTypes = new Dictionary<string, Ingredient[]>()
+    { { "Latte", new Ingredient[] { Ingredient.Milk } },
+      { "Cappuccino", new Ingredient[] { Ingredient.MilkFoam, Ingredient.Milk } },
+      { "Americano", new Ingredient[] { Ingredient.Water } },
+      { "Macchiato", new Ingredient[] { Ingredient.MilkFoam } },
+      { "Mocha", new Ingredient[] { Ingredient.ChocolateSyrup, Ingredient.Milk } }
     };
-    
-    public static Type GetCoffeeType(List<Ingredient> ingredients)
-    {
-        if (ingredients.Count == 0)
-        {
-            return typeof(Espresso);
-        }
 
-        foreach (var coffeeType in coffeeTypes)
+        public static string GetCoffeeType(List<Ingredient> ingredients)
         {
-            if (coffeeType.Value.Length == ingredients.Count && coffeeType.Value.All(ingredients.Contains))
+            if (ingredients.Count == 0 )
             {
-                return coffeeType.Key;
+                return "Espresso";
             }
+
+            foreach (var coffeeType in coffeeTypes)
+            {
+                if (coffeeType.Value.Length == ingredients.Count && coffeeType.Value.All(ingredients.Contains))
+                {
+                    return coffeeType.Key;
+                }
+            }
+            return "CustomBeverage";
         }
-        return typeof(CustomBeverage);
     }
-}
 
-public class Latte : Espresso
-{
-    public Latte() : base(new List<Ingredient>() { Ingredient.Milk })
+    public class Latte : Espresso
     {
+        public Latte() : base(new List<Ingredient>() { Ingredient.Milk })
+        {
 
+        }
     }
-} 
 
-public class Cappuccino : Espresso
-{
-    public Cappuccino() : base(new List<Ingredient>() { Ingredient.Milk, Ingredient.MilkFoam })
+    public class Cappuccino : Espresso
     {
+        public Cappuccino() : base(new List<Ingredient>() { Ingredient.Milk, Ingredient.MilkFoam })
+        {
 
+        }
     }
-}
 
-public class Americano : Espresso
-{
-    public Americano() : base(new List<Ingredient>() { Ingredient.Water })
+    public class Americano : Espresso
     {
+        public Americano() : base(new List<Ingredient>() { Ingredient.Water })
+        {
 
+        }
     }
-}
 
-public class Macchiato : Espresso
-{
-    public Macchiato() : base (new List<Ingredient>() { Ingredient.MilkFoam })
+    public class Macchiato : Espresso
     {
+        public Macchiato() : base(new List<Ingredient>() { Ingredient.MilkFoam })
+        {
+        }
     }
-}
 
-public class Mocha : Espresso
-{
-    public Mocha() : base(new List<Ingredient>() { Ingredient.ChocolateSyrup, Ingredient.Milk })
+    public class Mocha : Espresso
     {
+        public Mocha() : base(new List<Ingredient>() { Ingredient.ChocolateSyrup, Ingredient.Milk })
+        {
+        }
     }
-}
 
-public class CustomBeverage : Espresso
-{
-    public CustomBeverage(List<Ingredient> ingredients): base (ingredients)
+    public class CustomBeverage : Espresso
     {
+        public CustomBeverage(List<Ingredient> ingredients) : base(ingredients)
+        {
+        }
     }
 }
